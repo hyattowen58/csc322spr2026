@@ -29,14 +29,6 @@ function createTriangle(a, b, c, color = 0xffffff) {
   return new THREE.Line(geometry, material);
 }
 
-// tetrahedron
-function createTetrahedron(a, b, c, d, color = 0xffffff) {
-  const points = [a, b, c, a, d, b, d, c];
-  const geometry = new THREE.BufferGeometry().setFromPoints(points);
-  const material = new THREE.LineBasicMaterial({ color });
-  return new THREE.Line(geometry, material);
-}
-
 // --------------------
 // Create Shapes
 // --------------------
@@ -49,15 +41,6 @@ const triangle = createTriangle(
   new THREE.Vector3(0, 10, 0)
 );
 scene.add(triangle);
-
-// tetrahedron 
-const tetrahedron = createTetrahedron(
-  new THREE.Vector3(-20, 0, -10),
-  new THREE.Vector3(20, 0, -10),
-  new THREE.Vector3(0, 0, 10),
-  new THREE.Vector3(0, 30, 0)
-);
-scene.add(tetrahedron);
 
 // Render Loop
 function animate() {
