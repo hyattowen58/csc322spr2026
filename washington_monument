@@ -1,0 +1,144 @@
+// Import THREE
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+
+
+
+
+// Create Renderer
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+
+
+
+// Create Camera and Scene
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+camera.position.set(0, 400, 800);
+camera.lookAt(0, 250, 0);
+const scene = new THREE.Scene();
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 250, 0);
+controls.update();
+
+
+// --------------------
+// Shape Functions
+// --------------------
+
+
+
+
+// creating edges/general geometry (points used in commented version of just edges)
+function createMonument(a, b, c, d, e, f, g, h,i, color = 0xffffff) {
+  const points = [a, b, c, d, a, e, f, b, c, g, h, d, h, e, i, f, i, g, i, h];
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  const material = new THREE.LineBasicMaterial({ color });
+  return new THREE.Line(geometry, material);
+}
+
+
+
+
+// --------------------
+// Create Shapes
+// --------------------
+
+
+
+
+// monument
+/*const monument = createMonument(
+  new THREE.Vector3(22.5, 0, 22.5),
+  new THREE.Vector3(22.5, 0, -22.5),
+  new THREE.Vector3(-22.5, 0, -22.5),
+  new THREE.Vector3(-22.5, 0, 22.5),
+  new THREE.Vector3(17.5, 500, 17.5),
+  new THREE.Vector3(17.5, 500, -17.5),
+  new THREE.Vector3(-17.5, 500, -17.5),
+  new THREE.Vector3(-17.5, 500, 17.5),
+  new THREE.Vector3(0, 555, 0)
+); */
+
+
+//create vertex for the momnument and outline for faces
+const A = new THREE.Vector3(22.5, 0, 22.5);
+const B = new THREE.Vector3(22.5, 0, -22.5);
+const C = new THREE.Vector3(-22.5, 0, -22.5);
+const D = new THREE.Vector3(-22.5, 0, 22.5);
+const E = new THREE.Vector3(17.5, 500, 17.5);
+const F = new THREE.Vector3(17.5, 500, -17.5);
+const G = new THREE.Vector3(-17.5, 500, -17.5);
+const H = new THREE.Vector3(-17.5, 500, 17.5);
+const I = new THREE.Vector3(0, 555, 0);
+
+
+//color setup
+const colorBase = "red";
+const colorFace1 = 0x00ff00;
+const colorFace2 = "skyblue";
+const colorFace3 = "rgb(255, 255, 0)";
+const colorFace4 = "rgb(255, 165, 0)";
+
+
+const faceColors = [
+  new THREE.Color(colorBase), new THREE.Color(colorFace1), new THREE.Color(colorFace2), new THREE.Color(colorFace3), new THREE.Color(colorFace4)
+];
+
+
+//geometry buffers
+const positions = [];
+const colors = [];
+
+
+//build faces out of triangles
+function addFace(v1, v2, v3, color) {
+  positions.push(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z, v3.x, v3.y, v3.z);
+  for(let i = 0; i < 3; i++)
+  {
+    colors.push(color.r, color.g, color.b);
+  }
+}
+
+
+//adding faces
+addFace(A, B, F, faceColors[1]);
+addFace(A, F, E, faceColors[1]);
+addFace(B, C, G, faceColors[2]);
+addFace(B, G, F, faceColors[2]);
+addFace(C, D, H, faceColors[3]);
+addFace(C, H, G, faceColors[3]);
+addFace(D, A, E, faceColors[4]);
+addFace(D, E, H, faceColors[4]);
+addFace(E, F, I, faceColors[0]);
+addFace(F, G, I, faceColors[0]);
+addFace(G, H, I, faceColors[0]);
+addFace(H, E, I, faceColors[0]);
+
+
+//buffer geometry creation
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+
+const material = new THREE.MeshBasicMaterial({vertexColors: true, side: THREE.FrontSide});
+
+
+const monument = new THREE.Mesh(geometry, material);
+scene.add(monument)
+
+
+// Render Loop
+function animate() {
+  requestAnimationFrame(animate);
+  monument.rotation.y += 0.2;
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+
+
+
