@@ -75,11 +75,11 @@ const I = new THREE.Vector3(0, 555, 0);
 
 
 //color setup
-const colorBase = "red";
-const colorFace1 = 0x00ff00;
-const colorFace2 = "skyblue";
-const colorFace3 = "rgb(255, 255, 0)";
-const colorFace4 = "rgb(255, 165, 0)";
+const colorBase = "red"; //red
+const colorFace1 = 0x00ff00; //green
+const colorFace2 = "skyblue"; //skyblue
+const colorFace3 = "rgb(255, 255, 0)"; //yellow
+const colorFace4 = "rgb(255, 165, 0)"; //orange
 
 
 const faceColors = [
